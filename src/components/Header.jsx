@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { CartContext } from './Roots'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [cart] = useContext(CartContext)
   return (
     <div className='px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8'>
       <div className='relative flex items-center justify-between'>
@@ -24,7 +26,7 @@ const Header = () => {
             Smart Home
           </span>
         </Link>
-        <ul className='flex items-center hidden space-x-8 lg:flex'>
+        <ul className='hidden md:flex items-center space-x-8 lg:flex'>
           <li>
             <Link
               to='/home'
@@ -52,7 +54,11 @@ const Header = () => {
               title='Cart'
               className='font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400'
             >
+              <div className='relative px-3 py-2'>
+
               <p> Cart</p>
+              <p className='absolute top-0 right-0 font-bold'>{cart.length}</p>
+              </div>
             </Link>
           </li>
           <li>

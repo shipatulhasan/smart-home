@@ -1,48 +1,38 @@
-// use local storage to manage cart data
-const addToDb = (id) => {
-  let shoppingCart = {};
+const addToDb = id=>{
 
-  //get the shopping cart from local storage
-  const storedCart = localStorage.getItem("shopping-cart");
-  if (storedCart) {
-    shoppingCart = JSON.parse(storedCart);
+  const storedProduct = getStoredProduct()
+  let quantity = storedProduct[id]
+  if(quantity){
+    const newQuantity = quantity + 1
+    storedProduct[id] = newQuantity
+  }
+  else{
+    storedProduct[id] = 1
+  }
+  localStorage.setItem('shopping-cart',JSON.stringify(storedProduct))
+
+}
+const getStoredProduct = ()=>{
+  const storedProduct = localStorage.getItem('shopping-cart')
+  let cart = {}
+  if(storedProduct){
+    cart = JSON.parse(storedProduct)
+  }
+  return cart
+}
+
+const removeData = (id)=>{
+  const storedProduct = getStoredProduct()
+
+  if(storedProduct[id]){
+    delete storedProduct[id]
   }
 
-  // add quantity
-  const quantity = shoppingCart[id];
-  if (quantity) {
-    const newQuantity = quantity + 1;
-    shoppingCart[id] = newQuantity;
-  } else {
-    shoppingCart[id] = 1;
-  }
-  localStorage.setItem("shopping-cart", JSON.stringify(shoppingCart));
-};
+  localStorage.setItem('shopping-cart',JSON.stringify(storedProduct))
+}
 
-const getStoredCart = () => {
-  let shoppingCart = {};
+const clearData = ()=>{
+  localStorage.clear()
+}
 
-  //get the shopping cart from local storage
-  const storedCart = localStorage.getItem("shopping-cart");
-  if (storedCart) {
-    shoppingCart = JSON.parse(storedCart);
-  }
-  return shoppingCart;
-};
-
-const removeFromDb = (id) => {
-  const storedCart = localStorage.getItem("shopping-cart");
-  if (storedCart) {
-    const shoppingCart = JSON.parse(storedCart);
-    if (id in shoppingCart) {
-      delete shoppingCart[id];
-      localStorage.setItem("shopping-cart", JSON.stringify(shoppingCart));
-    }
-  }
-};
-
-const deleteShoppingCart = () => {
-  localStorage.removeItem("shopping-cart");
-};
-
-export { addToDb, getStoredCart, removeFromDb, deleteShoppingCart };
+export {addToDb, getStoredProduct,removeData, clearData}
